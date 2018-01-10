@@ -1,0 +1,94 @@
+JDBC Connection to Oracle – Connect java app execute query
+
+JDBC connection to oracle database java program example with simple steps to connect java application to oracle database and execute query.
+
+ 
+
+JBDC contains classes and interfaces that help implement  communication  between java application and data base. Here are steps to connect application to database.
+
+ 
+
+Load and register driver class using Class.forName(“oracle.jdbc.OracleDriver”).
+Call getConnection method of DriverManager class with hos name, user and password that will make connection from application to oracle database.
+Create statement using createStatement() of connection object retruned by device manager.
+Constructur SQL Query and execute is using executeQuery(sql) of statement object
+Close result set.
+ 
+
+Database connectivity in java with oracle example
+
+ 
+
+
+//
+import java.sql.*;
+public class JdbcConnection {
+
+	public static void main(String[] args) {
+		try {
+			
+			/*-----------------------------------
+			 * It used for loading and registering 
+			 * (oracle JDBC) driver to our java application.
+			 * In this class path "OracleDriver" class is 
+			 * also presented which presented in "ojdbc14.jar" .
+			 * 
+			 */
+			
+			Class.forName("oracle.jdbc.OracleDriver");
+			
+			/*-----------------------------------
+			 * It makes a bridge between java application
+			 *  and database for communication.
+			 * 
+			 */
+			
+			Connection com=DriverManager.getConnection(
+					"jdbc:oracle:thin:@localhost:1521:xe", 
+					"system","password");
+	         
+			/*-----------------------------------
+			 * It used to create statement to 
+			 * Java application.
+			 * 
+			 * Storing my sql query into a string. 
+			 * 
+			 */
+			
+			Statement st=com.createStatement();
+			String sql="select * from student ";
+	         
+			/*-----------------------------------
+			 * It used to send and access requirement from
+			 * database and store in ResultSet 
+			 * object.That result is used by 
+			 * java application.
+			 * 
+			 */
+	         ResultSet result=st.executeQuery(sql);
+	         
+	         /*-----------------------------------
+				 *We are displaying resulted object
+				 * for each row. 
+				 * 
+				 */
+	         
+	         while(result.next()) {
+	        	 System.out.println(
+	        			 "ID="+result.getInt("ID")+" "
+	        			 		+ "Name= "+result.getString("Name"));
+	        
+	         }
+	         result.close();
+	         
+		} catch (SQLException e) {
+			
+			System.out.println(e);
+			
+		} catch (ClassNotFoundException e) {
+			
+			System.out.println(e);
+		}
+		
+	}
+}
